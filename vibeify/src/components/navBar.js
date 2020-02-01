@@ -33,14 +33,17 @@ class Nav extends Component {
                 >
                     <img src={settings} className="Spotify_logo_login" height="30" width="40" />
                 </Button>
-                <Modal
-                    isOpen={this.state.showModal}
-                    onRequestClose={this.closeModal}
-                >
-                    <button onClick={() => { this.setState({ showModal: false }) }}>close</button>
-                    <div>I am a modal</div>
-                </Modal>
-
+                <div>
+                    <Modal
+                        isOpen={this.state.showModal}
+                        onRequestClose={this.closeModal}
+                    >
+                        <div>
+                            <SettingsPage/>
+                        </div>
+                        <button onClick={() => { this.setState({ showModal: false }) }}>close</button>
+                    </Modal>
+                </div>
             </div>
         );
     }

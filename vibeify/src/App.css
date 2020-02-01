@@ -67,6 +67,31 @@
   color: white;
 }
 
+.ReactModal__Content  {
+  color: white;
+  top: 10rem !important;
+  left: 25rem !important;
+  right: 25rem !important;
+  bottom: 10rem !important;
+  padding: 0 !important;
+}
+
+.Settings-modal {
+  color: black;
+}
+
+.Set-playlist {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.album_art {
+  height: 2rem;
+  padding-right: 1rem;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
