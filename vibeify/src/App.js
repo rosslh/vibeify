@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import CameraPage from './pages/camera';
+import CameraPage from './pages/camera/camera';
 import LoginPage from './pages/login'
 import SettingsPage from './pages/settings'
 
