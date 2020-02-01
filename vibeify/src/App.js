@@ -6,8 +6,8 @@ import SettingsPage from './pages/settings'
 
 function App() {
   return (
-    // <CameraPage/>
-    <SettingsPage/>
+    <CameraPage/>
+    // <SettingsPage/>
     // <LoginPage/>
   );
 }
