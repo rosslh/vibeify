@@ -158,7 +158,6 @@ class PoseNet extends Component {
       updateRate,
       skeletonColor, 
       skeletonLineWidth,
-      updateRate
       } = this.props
     const posenetModel = this.posenet
     const video = this.video
