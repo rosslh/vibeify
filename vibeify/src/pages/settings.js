@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
-import { Button, ButtonGroup, Modal } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import Modal from 'react-modal'
+
 
 class SettingsPage extends Component {
   state = {
-    current: this.playlists()
+    showModal: false
   }
+  onClose = e => {
+    this.props.onClose && this.props.onClose(e);
+  };
+  showModal() {
+    this.setState({showModal: true})
+  }
+
   render() {
+    if (!this.props.show) {
+      return null;
+    }
     return (
-      <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        open={open}
-        onClose={handleClose}
-      >
-        <div style={modalStyle} className={classes.paper}>
-          <h2 id="simple-modal-title">Text in a modal</h2>
-          <p id="simple-modal-description">
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </p>
-          <SimpleModal />
-        </div>
+      <Modal>
+        
       </Modal>
     );
   }
