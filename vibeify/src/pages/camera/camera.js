@@ -1,6 +1,8 @@
 import {drawKeyPoints, drawSkeleton} from './utils'
 import styles from './cameraStyle.module.css'
 import React, {Component} from 'react'
+import similarity from 'compute-cosine-similarity'
+// import * as cosine from 'compute-cosine-similarity'
 import * as posenet from '@tensorflow-models/posenet'
 
 class PoseNet extends Component {
@@ -24,6 +26,10 @@ class PoseNet extends Component {
 
   constructor(props) {
     super(props, PoseNet.defaultProps)
+    this.state = {
+      prevPoses: null,
+      currentDifference: 0
+    };
 
   }
 
@@ -98,10 +104,47 @@ class PoseNet extends Component {
     this.poseDetectionFrame(canvasContext)
   }
 
+  cosinesimilarity(prevPoses,currentPoses){
+    if (prevPoses == null || currentPoses == null){
+      return 1
+    }
+    // A list of lists, where each element is the vector representing an individuals position
+    let prevPosesMatrix = []
+    prevPoses.forEach(({score, keypoints}) => {
+      let prevVec = []
+      if (keypoints !== undefined){
+        keypoints.forEach(({score,part,position}) =>{
+          prevVec.push(position.x)
+          prevVec.push(position.y)
+        })
+        prevPosesMatrix.push(prevVec)
+      }
+    })
+    let currentPosesMatrix = []
+    currentPoses.forEach(({i, keypoints}) => {
+      let currentVec = []
+      if (keypoints !== undefined){
+        keypoints.forEach(({i,j,position}) =>{
+          currentVec.push(position.x)
+          currentVec.push(position.y)
+        })
+        currentPosesMatrix.push(currentVec)
+      }
+    })
+
+    let cosinesimilarities = 0
+    for (let ind = 0;ind<prevPosesMatrix.length; ind++){
+      if (ind < currentPosesMatrix.length){
+        cosinesimilarities += similarity(prevPosesMatrix[ind],currentPosesMatrix[ind])
+      }
+
+    }
+    return cosinesimilarities/prevPosesMatrix.length
+  }
+
   poseDetectionFrame(canvasContext) {
     const {
       imageScaleFactor, 
-      flipHorizontal, 
       outputStride, 
       minPoseConfidence, 
       minPartConfidence, 
@@ -131,6 +174,8 @@ class PoseNet extends Component {
         )
       poses.push(poses)
 
+      this.setState({currentDifference: this.cosinesimilarity(this.state.prevPoses,poses),prevPoses: poses})
+      
       canvasContext.clearRect(0, 0, videoWidth, videoHeight)
 
       if (showVideo) {
@@ -167,6 +212,7 @@ class PoseNet extends Component {
         <div>
           <video id={styles.videoNoShow} playsInline ref={this.getVideo} />
           <canvas className={styles.webcam} ref={this.getCanvas} />
+          <p>{this.state.currentDifference}</p>
         </div>
       </div>
     )
