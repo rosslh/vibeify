@@ -15,7 +15,9 @@ const Login = () => {
     "playlist-read-collaborative",
     "user-library-read",
     "user-modify-playback-state",
-    "streaming"
+    "streaming",
+    "user-read-email",
+    "user-read-private"
   ];
 
   const hash = window.location.hash
@@ -37,6 +39,8 @@ const Login = () => {
     if (_token) {
       // new token received
       setSpotifyToken(_token);
+      browserHistory.push("/play");
+    } else if (spotifyToken) {
       browserHistory.push("/play");
     }
   }, []);
