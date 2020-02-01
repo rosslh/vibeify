@@ -12,3 +12,12 @@
     -webkit-transform: scaleX(-1);
     display: none !important;
   }
+
+.activityMeter{
+  position: absolute;
+  bottom: 1rem;
+  text-align: center;
+  left:0;
+  right:0;
+  margin: auto;
+}

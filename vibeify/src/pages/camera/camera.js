@@ -1,8 +1,8 @@
 import {drawKeyPoints, drawSkeleton} from './utils'
 import styles from './cameraStyle.module.css'
 import React, {Component} from 'react'
+import { Line } from 'rc-progress';
 import similarity from 'compute-cosine-similarity'
-// import * as cosine from 'compute-cosine-similarity'
 import * as posenet from '@tensorflow-models/posenet'
 
 class PoseNet extends Component {
@@ -21,6 +21,7 @@ class PoseNet extends Component {
     imageScaleFactor: 0.5,
     skeletonColor: '#ffadea',
     skeletonLineWidth: 6,
+    updateRate: 5,
     loadingText: 'Loading...please be patient...'
   }
 
@@ -28,7 +29,8 @@ class PoseNet extends Component {
     super(props, PoseNet.defaultProps)
     this.state = {
       prevPoses: null,
-      currentDifference: 0
+      howActive: 0,
+      i: 0
     };
 
   }
@@ -100,7 +102,6 @@ class PoseNet extends Component {
 
     canvas.width = videoWidth
     canvas.height = videoHeight
-
     this.poseDetectionFrame(canvasContext)
   }
 
@@ -142,6 +143,7 @@ class PoseNet extends Component {
     return cosinesimilarities/prevPosesMatrix.length
   }
 
+  howActive = (prevPoses,currentPoses) => 100-(this.cosinesimilarity(prevPoses,currentPoses)+1)*50
   poseDetectionFrame(canvasContext) {
     const {
       imageScaleFactor, 
@@ -153,6 +155,7 @@ class PoseNet extends Component {
       videoWidth, 
       videoHeight, 
       showVideo, 
+      updateRate,
       skeletonColor, 
       skeletonLineWidth 
       } = this.props
@@ -173,8 +176,12 @@ class PoseNet extends Component {
           nmsRadius
         )
       poses.push(poses)
-
-      this.setState({currentDifference: this.cosinesimilarity(this.state.prevPoses,poses),prevPoses: poses})
+      if (this.state.i==0){
+        this.setState({howActive: this.howActive(this.state.prevPoses,poses),prevPoses: poses})
+      }
+      let i = this.state.i
+      i = (i+1)%updateRate
+      this.setState({i:i})
       
       canvasContext.clearRect(0, 0, videoWidth, videoHeight)
 
@@ -211,8 +218,13 @@ class PoseNet extends Component {
       <div>
         <div>
           <video id={styles.videoNoShow} playsInline ref={this.getVideo} />
-          <canvas className={styles.webcam} ref={this.getCanvas} />
-          <p>{this.state.currentDifference}</p>
+          <div>
+            <canvas className={styles.webcam} ref={this.getCanvas} />
+          </div>
+          <div className={styles.activityMeter}>
+            <h1>{this.state.howActive.toLocaleString()}</h1>
+            <Line percent={this.state.howActive} strokeWidth="4" strokeColor="#D3D3D3" />
+          </div>
         </div>
       </div>
     )
