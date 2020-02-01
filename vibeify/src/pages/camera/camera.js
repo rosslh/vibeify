@@ -6,8 +6,8 @@ import * as posenet from '@tensorflow-models/posenet'
 class PoseNet extends Component {
   
   static defaultProps = {
-    videoWidth: 900,
-    videoHeight: 700,
+    videoWidth: 1000,
+    videoHeight: 550,
     flipHorizontal: true,
     algorithm: 'multi-pose',
     showVideo: true,
@@ -163,7 +163,10 @@ class PoseNet extends Component {
 
   render() {
     return (
-      <div>
+      <div className="Camera-page">
+        <div className="Camera-header">
+
+        </div>
         <div>
           <video id={styles.videoNoShow} playsInline ref={this.getVideo} />
           <canvas className={styles.webcam} ref={this.getCanvas} />
