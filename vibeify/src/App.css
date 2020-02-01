@@ -69,10 +69,10 @@
 
 .ReactModal__Content  {
   color: white;
-  top: 10rem !important;
-  left: 25rem !important;
-  right: 25rem !important;
-  bottom: 10rem !important;
+  top: 30% !important;
+  left: 25% !important;
+  right: 25% !important;
+  bottom: 20% !important;
   padding: 0 !important;
 }
 

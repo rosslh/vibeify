@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
-import { Button, Checkbox } from '@material-ui/core'
+import { Checkbox } from '@material-ui/core'
 import spotify_logo from '../assets/spotify_logo.svg'
-import { blue } from '@material-ui/core/colors';
 
 
 class SettingsPage extends Component {
   state = {
+    selectedIDs: [],
     playlists: [
-      {title: "Ether", artist: "Nas"},
-      {title: "Ether", artist: "Bas"},
+      {title: "Jazz", length: "2h 56m", onPress: () => {this.editIds(0)}},
+      {title: "Funk", length: "1h 34m", onPress: () => {this.editIds(1)}},
     ],
+  }
+
+  editIds(id) {
+    let currentIDs = this.state.selectedIDs
+    if (currentIDs.includes(id))
+      currentIDs = currentIDs.filter((sID) => sID != id)
+    else
+      currentIDs.push(id)
+
+    this.setState({selectedIDs: currentIDs})
+    console.log(currentIDs)
   }
 
   render() {
@@ -29,10 +40,6 @@ class SettingsPage extends Component {
 }
 
 class Playlist extends Component {
-  state = {
-    chosen: false
-  }
-
   render() {
     return (
       <tr>
@@ -43,11 +50,11 @@ class Playlist extends Component {
           {this.props.title}
         </td>
         <td>
-          {this.props.artist}
+          {this.props.length}
         </td>
         <td>
           <Checkbox
-            onChange={() => { this.setState({ chosen: !this.state.chosen }) }}
+            onChange={this.props.onPress}
           />
         </td>
       </tr>
