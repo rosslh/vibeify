@@ -1,4 +1,4 @@
-# Faceify
+# Vibeify
 Personal DJ for a room - uses Amazon Echo
 
 ### Data Points
