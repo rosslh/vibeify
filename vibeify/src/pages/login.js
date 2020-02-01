@@ -10,7 +10,7 @@ class LoginPage extends Component {
 
     render() {
         return (
-            <header className="App-header">
+            <header className="Login-header">
                 <Button 
                 className="Login_button"
                 onClick={this.onLogin}
