@@ -3,6 +3,7 @@ import styles from './cameraStyle.module.css'
 import React, {Component} from 'react'
 import similarity from 'compute-cosine-similarity'
 import * as posenet from '@tensorflow-models/posenet'
+import Nav from "../../components/navBar"
 
 class PoseNet extends Component {
   
@@ -218,6 +219,7 @@ class PoseNet extends Component {
     return (
       <div className>
         <div>
+          <Nav />
           <video id={styles.videoNoShow} playsInline ref={this.getVideo} />
           <canvas className={styles.webcam} ref={this.getCanvas} />
           <p>{this.state.howActive},{this.state.i}</p>
