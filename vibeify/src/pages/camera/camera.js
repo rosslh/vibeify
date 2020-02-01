@@ -1,6 +1,7 @@
 import {drawKeyPoints, drawSkeleton} from './utils'
 import styles from './cameraStyle.module.css'
 import React, {Component} from 'react'
+import similarity from 'compute-cosine-similarity'
 import * as posenet from '@tensorflow-models/posenet'
 
 class PoseNet extends Component {
@@ -19,11 +20,17 @@ class PoseNet extends Component {
     imageScaleFactor: 0.5,
     skeletonColor: '#ffadea',
     skeletonLineWidth: 6,
+    updateRate: 10,
     loadingText: 'Loading...please be patient...'
   }
 
   constructor(props) {
     super(props, PoseNet.defaultProps)
+    this.state = {
+      prevPoses: null,
+      howActive: 0,
+      i: 0
+    };
 
   }
 
@@ -98,6 +105,46 @@ class PoseNet extends Component {
     this.poseDetectionFrame(canvasContext)
   }
 
+  cosinesimilarity(prevPoses,currentPoses){
+    if (prevPoses == null || currentPoses == null){
+      return 1
+    }
+    // A list of lists, where each element is the vector representing an individuals position
+    let prevPosesMatrix = []
+    prevPoses.forEach(({score, keypoints}) => {
+      let prevVec = []
+      if (keypoints !== undefined){
+        keypoints.forEach(({score,part,position}) =>{
+          prevVec.push(position.x)
+          prevVec.push(position.y)
+        })
+        prevPosesMatrix.push(prevVec)
+      }
+    })
+    let currentPosesMatrix = []
+    currentPoses.forEach(({i, keypoints}) => {
+      let currentVec = []
+      if (keypoints !== undefined){
+        keypoints.forEach(({i,j,position}) =>{
+          currentVec.push(position.x)
+          currentVec.push(position.y)
+        })
+        currentPosesMatrix.push(currentVec)
+      }
+    })
+
+    let cosinesimilarities = 0
+    for (let ind = 0;ind<prevPosesMatrix.length; ind++){
+      if (ind < currentPosesMatrix.length){
+        cosinesimilarities += similarity(prevPosesMatrix[ind],currentPosesMatrix[ind])
+      }
+
+    }
+    return cosinesimilarities/prevPosesMatrix.length
+  }
+
+  howActive = (prevPoses,currentPoses) => 100-(this.cosinesimilarity(prevPoses,currentPoses)+1)*50
+
   poseDetectionFrame(canvasContext) {
     const {
       imageScaleFactor, 
@@ -111,9 +158,9 @@ class PoseNet extends Component {
       videoHeight, 
       showVideo, 
       skeletonColor, 
-      skeletonLineWidth 
+      skeletonLineWidth,
+      updateRate
       } = this.props
-
     const posenetModel = this.posenet
     const video = this.video
 
@@ -130,7 +177,13 @@ class PoseNet extends Component {
           nmsRadius
         )
       poses.push(poses)
-
+      if (this.state.i == 0){
+        this.setState({howActive: this.howActive(this.state.prevPoses,poses),prevPoses: poses})
+      }
+      let i = (this.state.i+1)%updateRate
+      this.setState({i:i})
+      
+      
       canvasContext.clearRect(0, 0, videoWidth, videoHeight)
 
       if (showVideo) {
@@ -170,6 +223,7 @@ class PoseNet extends Component {
         <div>
           <video id={styles.videoNoShow} playsInline ref={this.getVideo} />
           <canvas className={styles.webcam} ref={this.getCanvas} />
+          <p>{this.state.howActive},{this.state.i}</p>
         </div>
       </div>
     )
