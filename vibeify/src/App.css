@@ -15,7 +15,6 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,6 +25,46 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.Spotify_logo_login {
+  height: 3rem;
+}
+
+.Login_button {
+  height: 4rem;
+}
+
+.Login-header {
+  background-image: linear-gradient(#2E2E2C, #8BCB95);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.Camera-page {
+  background-image: linear-gradient(#2E2E2C, #8BCB95);
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: top;
+  font-size: calc(10px + 2vmin);
+  overflow: hidden;
+}
+.Camera-header {
+  background-image: linear-gradient(#2E2E2C, #8BCB95);
+  min-height: 10rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
 @keyframes App-logo-spin {

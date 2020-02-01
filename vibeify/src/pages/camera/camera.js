@@ -8,8 +8,8 @@ import * as posenet from '@tensorflow-models/posenet'
 class PoseNet extends Component {
   
   static defaultProps = {
-    videoWidth: 900,
-    videoHeight: 700,
+    videoWidth: document.documentElement.clientWidth,
+    videoHeight: document.documentElement.clientHeight,
     flipHorizontal: true,
     algorithm: 'multi-pose',
     showVideo: true,
@@ -157,9 +157,9 @@ class PoseNet extends Component {
       showVideo, 
       updateRate,
       skeletonColor, 
-      skeletonLineWidth 
+      skeletonLineWidth,
+      updateRate
       } = this.props
-
     const posenetModel = this.posenet
     const video = this.video
 
@@ -215,7 +215,7 @@ class PoseNet extends Component {
 
   render() {
     return (
-      <div>
+      <div className>
         <div>
           <video id={styles.videoNoShow} playsInline ref={this.getVideo} />
           <div>

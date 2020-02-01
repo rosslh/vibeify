@@ -1,23 +1,29 @@
 import React, { Component } from 'react';
+import { Button } from '@material-ui/core';
+import Modal from 'react-modal'
+
 
 class SettingsPage extends Component {
-    render() {
-        return (
-            <header className="App-header">
-            <p>
-              Edit <code>src/App.js</code> and save to reload.
-            </p>
-            <a
-              className="App-link"
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn React
-            </a>
-          </header>
-        );
+  state = {
+    showModal: false
+  }
+  onClose = e => {
+    this.props.onClose && this.props.onClose(e);
+  };
+  showModal() {
+    this.setState({showModal: true})
+  }
+
+  render() {
+    if (!this.props.show) {
+      return null;
     }
+    return (
+      <Modal>
+        
+      </Modal>
+    );
+  }
 }
 
 export default SettingsPage
