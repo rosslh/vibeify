@@ -4,7 +4,6 @@ import { Router, Route, browserHistory, IndexRoute } from "react-router";
 import CameraPage from "./pages/camera/camera";
 import LoginPage from "./pages/login";
 // import SettingsPage from "./pages/settings";
-import SpotifyPage from "./pages/spotify";
 import StoreProvider from "./storeProvider";
 
 function App() {
@@ -16,7 +15,6 @@ function App() {
           <Route path={"home"} component={LoginPage} />
           <Route path={"play"} component={CameraPage} />
           {/* <Route path={"settings"} component={SettingsPage} /> */}
-          <Route path={"spotify"} component={SpotifyPage} />
         </Route>
       </Router>
     </StoreProvider>
