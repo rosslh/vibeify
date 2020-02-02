@@ -8,15 +8,12 @@ const Player = ({
   setShouldInitializePlaylist
 }) => {
   const { spotifyToken, selectedIDs } = useContext(Store);
+
   const [isPlaying, setIsPlaying] = useState(false);
-
   const [songs, setSongs] = useState({});
-
   const [songQueue, setSongQueue] = useState([]);
-
   const [areTracksFetched, setAreTracksFetched] = useState(false);
   const [areFeaturesFetched, setAreFeaturesFetched] = useState(false);
-
   const [lastQueueUpdate, setLastQueueUpdate] = useState(0);
 
   const segmentSongs = () => {
@@ -30,11 +27,15 @@ const Player = ({
       let segment = songQueue.slice(i, ceil);
       segmentedSongsArr.push(segment);
     }
+    if (!segmentedSongsArr.length)
+      segmentedSongsArr = [[], [], [], [], []]
+
     return segmentedSongsArr;
   };
 
+  // get list of songs
   useEffect(() => {
-    if (!areTracksFetched && spotifyToken) {
+    if (shouldInitializePlaylist || (!areTracksFetched && spotifyToken)) {
       const getData = async () => {
         let songsFromPlaylists = [];
         await Promise.all(
@@ -57,9 +58,10 @@ const Player = ({
         songsFromPlaylists.forEach(s => {
           newSongsObj[s.track.id] = s.track;
         });
-        console.log(newSongsObj);
         setSongs(newSongsObj);
         setAreTracksFetched(true);
+        setAreFeaturesFetched(false);
+        setShouldInitializePlaylist(false);
       };
       getData();
     }
@@ -67,9 +69,11 @@ const Player = ({
 
   const sum = lst => lst.reduce((a, b) => a + b, 0);
 
+  // augment list of songs with features
   useEffect(() => {
     if (areTracksFetched && !areFeaturesFetched) {
       const getData = async () => {
+
         const songIds = Object.keys(songs);
 
         const featuresEndpoint = `https://api.spotify.com/v1/audio-features?ids=${songIds.join(
@@ -95,53 +99,56 @@ const Player = ({
             };
           }
         });
-
+        
         setSongQueue(
           Object.keys(songs)
             .map(id => songs[id])
-            .sort((a, b) => b.litness - a.litness)
+            .sort((a, b) => a.litness - b.litness)
         );
 
         setSongs(songsUpdate);
         setAreFeaturesFetched(true);
+        console.log(segmentSongs()[currentBin]);
+        //   await fetch(`https://api.spotify.com/v1/me/player/play`, {
+        //     Authorization: "Bearer " + spotifyToken,
+        //     method: "PUT",
+        //     mode: "cors",
+        //     headers: {
+        //       "Content-Type": "application/json",
+
+        //       Authorization: "Bearer " + spotifyToken
+        //     },
+        //     body: JSON.stringify({
+        //       // uris: ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"]
+        //       uris: cQ.map(s => `spotify:track:${s.id}`)
+        //     })
+        //   }).catch(r => {
+        //     alert(r);
+        //   });
       };
       getData();
     }
   });
 
-  useEffect(() => {
-    const getData = async () => {
-      if (
-        songQueue.length &&
-        (Date.now() - lastQueueUpdate > 18000 || shouldInitializePlaylist)
-      ) {
-        let currentQueue = segmentSongs()[currentBin];
-        await setQueue(currentQueue);
-        setLastQueueUpdate(Date.now());
-        setShouldInitializePlaylist(false);
-      }
-    };
-    getData();
-  });
+  // // 
+  // useEffect(() => {
+  //   if (  //     selectedIDs.length &&
+  //     (Date.now() - lastQueueUpdate > 18000 || shouldInitializePlaylist)
+  //   ) {
+  //     const getData = async () => {
+  //       setAreTracksFetched(false);
+  //       setAreFeaturesFetched(false);
+  //       setShouldInitializePlaylist(false);
+  //       setUseEffectSemaphore(false);
+  //     }
 
-  const setQueue = async cQ => {
-    await fetch(`https://api.spotify.com/v1/me/player/play`, {
-      Authorization: "Bearer " + spotifyToken,
-      method: "PUT",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/JSON",
+  //     getData();
+  //   }
+  // });
 
-        Authorization: "Bearer " + spotifyToken
-      },
-      body: JSON.stringify({
-        // uris: ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"]
-        uris: cQ.map(song => `spotify:track:${song.id}`)
-      })
-    }).catch(r => {
-      alert(r);
-    });
-  };
+  // const setQueue = async (cQ) => {
+
+  // };
 
   return (
     <div
@@ -172,6 +179,7 @@ const Player = ({
           play={isPlaying}
           token={spotifyToken}
           magnifySliderOnHover={true}
+          uris={segmentSongs()[currentBin].map(x => `spotify:track:${x.id}`)}
           callback={state => {
             // alert(JSON.stringify(state))
           }}

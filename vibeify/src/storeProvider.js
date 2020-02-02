@@ -4,9 +4,7 @@ import Store from "./store";
 class StoreProvider extends Component {
   state = {
     spotifyToken: localStorage.getItem("spotifyToken") || "",
-    selectedIDs: [
-      "1EVE9kOZ2i4171hNdvWVhU"
-    ]
+    selectedIDs: []
   };
 
   render() {
