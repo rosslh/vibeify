@@ -20,3 +20,8 @@
   right:0;
   margin: auto;
 }
+.playerStyle{
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+}

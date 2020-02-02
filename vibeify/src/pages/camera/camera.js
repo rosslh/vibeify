@@ -1,7 +1,7 @@
 import { drawKeyPoints, drawSkeleton } from "./utils";
 import styles from "./cameraStyle.module.css";
 import React, { Component } from "react";
-import { Circle } from "rc-progress";
+import { Circle,Line } from "rc-progress";
 import similarity from "compute-cosine-similarity";
 import * as posenet from "@tensorflow-models/posenet";
 import Nav from "../../components/navBar";
@@ -258,7 +258,8 @@ class PoseNet extends Component {
             style={{
               color: "white",
               display: "flex",
-              width: "100%",
+              width: "100vw",
+              height: "100vh",
               top: "50%",
               transform: "translateY(-50%)",
               position: "absolute",
@@ -291,19 +292,22 @@ class PoseNet extends Component {
           <div className={styles.activityMeter}>
             <h1>Energy Score {this.state.howActive.toFixed(1).toLocaleString()}</h1>
             <h2>Avg Calories Burned {this.state.culmActivity.toFixed(1).toLocaleString()}</h2>
-
-            <Circle
-            style={{height:"100", width:"100"}}
+            <div className={styles.playerStyle}>
+            <Line
               percent={this.state.howActive}
-              trailWidth="4"
-              strokeWidth="10"
-              strokeColor="white"
+              strokeWidth="4"
+              strokeColor="#D3D3D3"
+              style={{width: "80%"}}
+
             />
+                      <Player/>
+
+            </div>
+           
           </div>
         </div>
-        <span className="player">
-          <Player/>
-        </span>
+        {/* <span className="player"> */}
+        {/* </span> */}
       </div>
     );
   }

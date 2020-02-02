@@ -11,6 +11,7 @@ const Player = () => {
       style={{
         height: "5rem",
         display: "flex",
+        flex:1,
         alignItems: "flex-end"
       }}
     >
@@ -28,6 +29,8 @@ const Player = () => {
           persistDeviceSelection
           play={isPlaying}
           token={spotifyToken}
+          magnifySliderOnHover={true}
+          uris={['spotify:artist:6HQYnRM4OzToCYPpVBInuU']}
         />
       )}
     </div>
