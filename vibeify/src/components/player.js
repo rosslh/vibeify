@@ -16,12 +16,18 @@ const Player = () => {
     >
       {spotifyToken && (
         <SpotifyPlayer
+          styles={{
+            bgColor: '#333',
+            color: '#fff',
+            loaderColor: '#fff',
+            sliderColor: '#1cb954',
+            savedColor: '#fff',
+            trackArtistColor: '#ccc',
+            trackNameColor: '#fff',
+          }}
           persistDeviceSelection
           play={isPlaying}
           token={spotifyToken}
-          styles={{
-            sliderColor: "#1cb954"
-          }}
         />
       )}
     </div>
