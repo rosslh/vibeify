@@ -1,7 +1,7 @@
 import { drawKeyPoints, drawSkeleton } from "./utils";
 import styles from "./cameraStyle.module.css";
 import React, { Component } from "react";
-import { Circle,Line } from "rc-progress";
+import { Circle } from "rc-progress";
 import similarity from "compute-cosine-similarity";
 import * as posenet from "@tensorflow-models/posenet";
 import Nav from "../../components/navBar";
@@ -271,7 +271,7 @@ class PoseNet extends Component {
             <h1 style={{ fontSize: "72px", color: "white" }}>
               {this.findLabel()}
             </h1>
-            <img src={require(`../../assets/${this.findLabel()}.png`)} />
+            <img style={{ marginLeft:"20px", height:"80px",width:"110px" }} src={require(`../../assets/${this.findLabel()}.png`)} />
             <img
               style={{zIndex:-1, position: "absolute", left: "0", right: "0" }}
               src={require(`../../assets/${this.findLabel()}Gradient.png`)}
@@ -290,17 +290,18 @@ class PoseNet extends Component {
             <canvas className={styles.webcam} ref={this.getCanvas} />
           </div>
           <div className={styles.activityMeter}>
+          <Circle
+              percent={this.state.howActive}
+              strokeWidth="8"
+              trailWidth="6"
+              strokeColor="White"
+              style={{height:70,width:70}}
+            />
             <h1>Energy Score {this.state.howActive.toFixed(1).toLocaleString()}</h1>
             <h2>Avg Calories Burned {this.state.culmActivity.toFixed(1).toLocaleString()}</h2>
             <div className={styles.playerStyle}>
-            <Line
-              percent={this.state.howActive}
-              strokeWidth="4"
-              strokeColor="#D3D3D3"
-              style={{width: "80%"}}
-
-            />
-                      <Player/>
+            
+            <Player/>
 
             </div>
            
