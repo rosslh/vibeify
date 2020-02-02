@@ -223,15 +223,15 @@ class PoseNet extends Component {
     findPoseDetectionFrame();
   }
   findLabel() {
-    if (this.state.howActive < 0.1) {
+    if (this.state.howActive <=2) {
       return "Relax";
-    } else if (this.state.howActive > 0.1 && this.state.howActive < 0.15) {
+    } else if (this.state.howActive > 2 && this.state.howActive <= 4) {
       return "Chill";
-    } else if (this.state.howActive > 0.15 && this.state.howActive < 0.2) {
+    } else if (this.state.howActive > 4 && this.state.howActive <= 10) {
       return "Vibing";
-    } else if (this.state.howActive > 0.2 && this.state.howActive < 0.25) {
+    } else if (this.state.howActive > 10 && this.state.howActive <= 30) {
       return "Upbeat";
-    } else if (this.state.howActive > 0.25) {
+    } else if (this.state.howActive > 30) {
       return "Crazy";
     }
   }
