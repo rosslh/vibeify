@@ -9,7 +9,7 @@ const Player = () => {
   return (
     <div
       style={{
-        height: "10rem",
+        height: "5rem",
         display: "flex",
         alignItems: "flex-end"
       }}
