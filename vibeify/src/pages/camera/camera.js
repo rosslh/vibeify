@@ -241,7 +241,7 @@ class PoseNet extends Component {
   }
   mean = (arr) => {
     if (arr.length == 0)
-      return [0, 0]
+      return 0
     let n = arr.length;
     let mean = arr.reduce((a, b) => a + b) / n;
     return mean
@@ -271,17 +271,17 @@ class PoseNet extends Component {
             <h1 style={{ fontSize: "72px", color: "white" }}>
               {this.findLabel()}
             </h1>
-            <img style={{ marginLeft:"20px", height:"80px",width:"110px" }} src={require(`../../assets/${this.findLabel()}.png`)} />
+            <img style={{ marginLeft: "20px", height: "80px", width: "110px" }} src={require(`../../assets/${this.findLabel()}.png`)} />
             <img
-              style={{zIndex:-1, position: "absolute", left: "0", right: "0" }}
+              style={{ zIndex: -1, position: "absolute", left: "0", right: "0" }}
               src={require(`../../assets/${this.findLabel()}Gradient.png`)}
             />
             <img
-              style={{zIndex:-1, position: "absolute", left: "0", right: "0" }}
+              style={{ zIndex: -1, position: "absolute", left: "0", right: "0" }}
               src={require(`../../assets/${this.findLabel()}Gradient.png`)}
             />
             <img
-              style={{zIndex:-1, position: "absolute", left: "0", right: "0" }}
+              style={{ zIndex: -1, position: "absolute", left: "0", right: "0" }}
               src={require(`../../assets/${this.findLabel()}Gradient.png`)}
             />
           </container>
@@ -290,25 +290,23 @@ class PoseNet extends Component {
             <canvas className={styles.webcam} ref={this.getCanvas} />
           </div>
           <div className={styles.activityMeter}>
-          <Circle
+            <Circle
               percent={this.state.howActive}
               strokeWidth="8"
               trailWidth="6"
               strokeColor="White"
-              style={{height:60,width:60}}
+              style={{ height: 60, width: 60 }}
             />
             <h1>Energy Score {this.state.howActive.toFixed(1).toLocaleString()}</h1>
             <h2>Avg Calories Burned {this.state.culmActivity.toFixed(1).toLocaleString()}</h2>
             <div className={styles.playerStyle}>
-            
-            <Player/>
-
+              
+                <Player />
+              
             </div>
-           
+
           </div>
         </div>
-        {/* <span className="player"> */}
-        {/* </span> */}
       </div>
     );
   }

@@ -24,7 +24,7 @@ class Nav extends Component {
 
         return (
             <span>
-                <div style={{ zIndex:1,display: "flex", position: "absolute", alignItems: "center", width: "100%", justifyContent: "space-between" }}>
+                <div style={{ zIndex: 1, display: "flex", position: "absolute", alignItems: "center", width: "100%", justifyContent: "space-between" }}>
                     <span style={{ display: "flex", flexDirection: "row" }}>
                         <img src={headerGraphic} alt="logo" height="65" width="80" />
                         <h2 style={headerText}>vibeify</h2>

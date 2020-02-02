@@ -41,28 +41,15 @@ const SettingsPage = () => {
     }
   });
 
-
   const editIds = (id) => {  
     let currentIDs = selectedIDs
-    if (typeof(selectedIDs) === "string")
-      currentIDs = selectedIDs.split(",")
     
     if (currentIDs.includes(id))
       currentIDs = currentIDs.filter((sID) => sID != id)
     else 
       currentIDs.push(id)
 
-    if (typeof(selectedIDs) === "string") {
-      let temp = ""
-      for (let i = 0; i < currentIDs.length; i++) {
-        temp += currentIDs[i]
-        temp += ","
-      }
-      temp += id
-      setSelectedIDs(temp)
-    } else {
-      setSelectedIDs(currentIDs)
-    }
+    setSelectedIDs(currentIDs)
   };
 
   return (
