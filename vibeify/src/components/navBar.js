@@ -13,6 +13,7 @@ class Nav extends Component {
 
     render() {
         const headerText = {
+            color:"white",
             textAlign: "left",
             margin: "auto",
             marginTop: 0,
@@ -24,7 +25,7 @@ class Nav extends Component {
         return (
             <div style={{ display: "flex", position: "absolute", alignItems: "center", width: "100%", justifyContent: "space-between", paddingRight: "16" }}>
 
-                <img src={headerGraphic} className="logo" alt="logo" height="50" width="80" />
+                <img src={headerGraphic} className="logo" alt="logo" height="65" width="80" />
                 <h1 style={headerText}>vibeify</h1>
 
                 <Button

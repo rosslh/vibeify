@@ -3,7 +3,8 @@ import Store from "./store";
 
 class StoreProvider extends Component {
   state = {
-    spotifyToken: localStorage.getItem("spotifyToken") || ""
+    spotifyToken: localStorage.getItem("spotifyToken") || "",
+    selectedIDs: localStorage.getItem("selectedIDs") || []
   };
 
   render() {
@@ -16,6 +17,14 @@ class StoreProvider extends Component {
               spotifyToken: newToken
             });
             localStorage.setItem("spotifyToken", newToken);
+          },
+
+          selectedIDs: this.state.selectedIDs,
+          setSelectedIDs: newToken => {
+            this.setState({
+              selectedIDs: newToken
+            });
+            localStorage.setItem("selectedIDs", newToken);
           }
         }}
       >

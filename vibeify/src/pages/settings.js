@@ -28,9 +28,11 @@ const SettingsPage = () => {
             img = element.images[0].url
 
           return ({
+            checked: selectedIDs.includes(element.id)? true : false,
             image: img,
             title: element.name,
             length: element.tracks.total,
+            key: element.id,
             onPress: () => editIds(element.id)
           })
         }));
@@ -40,14 +42,27 @@ const SettingsPage = () => {
   });
 
 
-  const editIds = (id) => {    
+  const editIds = (id) => {  
     let currentIDs = selectedIDs
+    if (typeof(selectedIDs) === "string")
+      currentIDs = selectedIDs.split(",")
+    
     if (currentIDs.includes(id))
       currentIDs = currentIDs.filter((sID) => sID != id)
     else 
       currentIDs.push(id)
-    
-    setSelectedIDs(currentIDs);
+
+    if (typeof(selectedIDs) === "string") {
+      let temp = ""
+      for (let i = 0; i < currentIDs.length; i++) {
+        temp += currentIDs[i]
+        temp += ","
+      }
+      temp += id
+      setSelectedIDs(temp)
+    } else {
+      setSelectedIDs(currentIDs)
+    }
   };
 
   return (
@@ -77,6 +92,10 @@ const SettingsPage = () => {
 
 
 class Playlist extends Component {
+  state = {
+    isChecked: this.props.checked
+  }
+
   render() {
     return (
       <tr>
@@ -91,11 +110,18 @@ class Playlist extends Component {
         </td>
         <td>
           <Checkbox
-            onChange={this.props.onPress}
+            onChange={() => this.buttonPress()}
+            checked={this.state.isChecked}
           />
         </td>
       </tr>
     );
+  }
+
+  buttonPress() {
+    this.props.onPress(); 
+    this.setState({isChecked: !this.state.isChecked})
+
   }
 }
 
