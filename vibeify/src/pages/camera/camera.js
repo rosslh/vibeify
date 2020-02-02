@@ -33,6 +33,7 @@ class PoseNet extends Component {
       prevPoses: null,
       slidingWindow: [],
       howActive: 0,
+      culmActivity: 0,
       i: 0
     };
   }
@@ -149,6 +150,7 @@ class PoseNet extends Component {
   }
 
   howActive = (slidingWindow) => 300-(this.mean(slidingWindow)+1)*150
+
   poseDetectionFrame(canvasContext) {
     const {
       imageScaleFactor,
@@ -187,7 +189,9 @@ class PoseNet extends Component {
         slidingWindow.push(cosinesimilarity)
         slidingWindow = slidingWindow.length > slidingWindowSize ? slidingWindow.slice(-slidingWindowSize) : slidingWindow
         const activityScore = this.howActive(slidingWindow)
-        this.setState({howActive: activityScore,slidingWindow:slidingWindow,prevPoses: poses})
+        let culm = this.state.culmActivity
+        culm += (activityScore*0.005)
+        this.setState({howActive: activityScore,culmActivity: culm,slidingWindow:slidingWindow,prevPoses: poses})
       }
       let i = this.state.i;
       i = (i + 1) % updateRate;
@@ -257,7 +261,8 @@ class PoseNet extends Component {
               transform: "translateY(-50%)",
               position: "absolute",
               alignItems: "center",
-              justifyContent: "center"
+              justifyContent: "center",
+              zindex:-1
             }}
           >
             <h1 style={{ fontSize: "72px", color: "white" }}>
@@ -274,7 +279,9 @@ class PoseNet extends Component {
             <canvas className={styles.webcam} ref={this.getCanvas} />
           </div>
           <div className={styles.activityMeter}>
-            <h1>{this.state.howActive.toLocaleString()}</h1>
+            <h1>Energy Score {this.state.howActive.toFixed(1).toLocaleString()}</h1>
+            <h2>Avg Calories Burned {this.state.culmActivity.toFixed(1).toLocaleString()}</h2>
+
             <Line
               percent={this.state.howActive}
               strokeWidth="4"
