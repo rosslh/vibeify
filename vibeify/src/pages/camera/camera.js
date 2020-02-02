@@ -295,7 +295,7 @@ class PoseNet extends Component {
               strokeWidth="8"
               trailWidth="6"
               strokeColor="White"
-              style={{height:70,width:70}}
+              style={{height:60,width:60}}
             />
             <h1>Energy Score {this.state.howActive.toFixed(1).toLocaleString()}</h1>
             <h2>Avg Calories Burned {this.state.culmActivity.toFixed(1).toLocaleString()}</h2>
