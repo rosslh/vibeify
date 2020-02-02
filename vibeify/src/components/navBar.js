@@ -19,6 +19,7 @@ class Nav extends Component {
             fontSize: 100,
         };
 
+        let visible = this.props.isLoggedIn ? "visible" : "hidden"
 
         return (
             <div style={{ display: "flex", position: "absolute", alignItems: "center", width: "100%", justifyContent: "space-between", paddingRight: "16" }}>
@@ -30,6 +31,7 @@ class Nav extends Component {
                     className="Login_button"
                     onClick={() => { this.setState({ showModal: true }) }}
                     variant="contained" color="0xfff"
+                    style={{visibility: visible}}
                 >
                     <img src={settings} className="Spotify_logo_login" height="30" width="40" />
                 </Button>

@@ -232,7 +232,7 @@ class PoseNet extends Component {
     return (
       <div className>
         <div>
-          <Nav />
+          <Nav isLoggedIn={true}/>
           <video id={styles.videoNoShow} playsInline ref={this.getVideo} />
           <div>
             <canvas className={styles.webcam} ref={this.getCanvas} />
