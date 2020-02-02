@@ -88,8 +88,7 @@
 }
 
 .album_art {
-  height: 2rem;
-  padding-right: 1rem;
+  height: 4rem;
 }
 
 @keyframes App-logo-spin {
