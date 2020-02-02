@@ -1,8 +1,9 @@
 import React, { useEffect, useContext } from "react";
 import { Button } from "@material-ui/core";
 import { browserHistory } from "react-router";
-import spotify_logo from "../assets/spotify_logo.svg";
-import Nav from "../components/navBar"
+import spotify_logo from "../assets/spotify_logo.png";
+import Header from "../components/splashHeader";
+import Nav from "../components/navBar";
 import Store from "../store";
 
 const Login = () => {
@@ -47,10 +48,11 @@ const Login = () => {
   }, []);
   return (
     <div>
-        <Nav isLoggedIn={spotifyToken!=""}/>
 
      <header className="Login-header">
+     <Header />
       <Button
+      style={{marginTop:"28px"}}
         className="Login_button"
         href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
           "%20"
@@ -58,7 +60,7 @@ const Login = () => {
         variant="contained"
         color="0xfff"
       >
-        <img alt="Spotify" src={spotify_logo} className="Spotify_logo_login" />
+        <img alt="Spotify" src={spotify_logo} className="Spotify_logo_login" style={{height:25,width:25, color:"gray",paddingRight:6}}/>
         Login to Spotify
       </Button>
     </header>
