@@ -32,7 +32,7 @@ class Nav extends Component {
                     className="Login_button"
                     onClick={() => { this.setState({ showModal: true }) }}
                     variant="contained" color="0xfff"
-                    style={{visibility: visible}}
+                    style={{visibility: visible, zIndex: 1000}}
                 >
                     <img src={settings} className="Spotify_logo_login" height="30" width="40" />
                 </Button>
