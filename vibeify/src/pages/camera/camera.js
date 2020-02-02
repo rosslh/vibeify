@@ -23,13 +23,15 @@ class PoseNet extends Component {
     skeletonColor: "#ffadea",
     skeletonLineWidth: 6,
     updateRate: 5,
-    loadingText: "Loading...please be patient..."
-  };
+    slidingWindowSize:30,
+    loadingText: 'Loading...please be patient...'
+  }
 
   constructor(props) {
     super(props, PoseNet.defaultProps);
     this.state = {
       prevPoses: null,
+      slidingWindow: [],
       howActive: 0,
       i: 0
     };
@@ -142,11 +144,11 @@ class PoseNet extends Component {
         );
       }
     }
-    return cosinesimilarities / prevPosesMatrix.length;
+    let avg = cosinesimilarities/prevPosesMatrix.length
+    return Number.isNaN(avg) ? 1 : avg
   }
 
-  howActive = (prevPoses, currentPoses) =>
-    100 - (this.cosinesimilarity(prevPoses, currentPoses) + 1) * 50;
+  howActive = (slidingWindow) => 300-(this.mean(slidingWindow)+1)*150
   poseDetectionFrame(canvasContext) {
     const {
       imageScaleFactor,
@@ -159,30 +161,33 @@ class PoseNet extends Component {
       videoHeight,
       showVideo,
       updateRate,
-      skeletonColor,
-      skeletonLineWidth
-    } = this.props;
-    const posenetModel = this.posenet;
-    const video = this.video;
+      skeletonColor, 
+      slidingWindowSize,
+      skeletonLineWidth,
+      } = this.props
+    const posenetModel = this.posenet
+    const video = this.video
 
     const findPoseDetectionFrame = async () => {
       let poses = [];
 
       poses = await posenetModel.estimateMultiplePoses(
-        video,
-        imageScaleFactor,
-        true,
-        outputStride,
-        maxPoseDetections,
-        minPartConfidence,
-        nmsRadius
-      );
-      poses.push(poses);
-      if (this.state.i == 0) {
-        this.setState({
-          howActive: this.howActive(this.state.prevPoses, poses),
-          prevPoses: poses
-        });
+          video, 
+          imageScaleFactor, 
+          true, 
+          outputStride, 
+          maxPoseDetections, 
+          minPartConfidence, 
+          nmsRadius
+        )
+      poses.push(poses)
+      if (this.state.i==0){
+        const cosinesimilarity = this.cosinesimilarity(this.state.prevPoses,poses)
+        let slidingWindow = this.state.slidingWindow
+        slidingWindow.push(cosinesimilarity)
+        slidingWindow = slidingWindow.length > slidingWindowSize ? slidingWindow.slice(-slidingWindowSize) : slidingWindow
+        const activityScore = this.howActive(slidingWindow)
+        this.setState({howActive: activityScore,slidingWindow:slidingWindow,prevPoses: poses})
       }
       let i = this.state.i;
       i = (i + 1) % updateRate;
@@ -218,24 +223,31 @@ class PoseNet extends Component {
     findPoseDetectionFrame();
   }
   findLabel() {
-    if (this.state.howActive < 0.1) {
+    if (this.state.howActive <=2) {
       return "Relax";
-    } else if (this.state.howActive > 0.1 && this.state.howActive < 0.15) {
+    } else if (this.state.howActive > 2 && this.state.howActive <= 4) {
       return "Chill";
-    } else if (this.state.howActive > 0.15 && this.state.howActive < 0.2) {
+    } else if (this.state.howActive > 4 && this.state.howActive <= 10) {
       return "Vibing";
-    } else if (this.state.howActive > 0.2 && this.state.howActive < 0.25) {
+    } else if (this.state.howActive > 10 && this.state.howActive <= 30) {
       return "Upbeat";
-    } else if (this.state.howActive > 0.25) {
+    } else if (this.state.howActive > 30) {
       return "Crazy";
     }
   }
-
+  mean = (arr) =>{
+    if (arr.length == 0)
+      return [0,0]
+    let n = arr.length;
+    let mean = arr.reduce((a,b) => a+b)/n;
+    return mean
+  }
   render() {
+   
     return (
       <div>
         <div>
-          <Nav />
+          <Nav isLoggedIn={true}/>
           <container
             style={{
               color: "white",
