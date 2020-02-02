@@ -5,7 +5,7 @@ import { Line } from "rc-progress";
 import similarity from "compute-cosine-similarity";
 import * as posenet from "@tensorflow-models/posenet";
 import Nav from "../../components/navBar";
-import Player from "../../components/player";
+import Player from "../components/player";
 
 class PoseNet extends Component {
   static defaultProps = {
@@ -252,6 +252,8 @@ class PoseNet extends Component {
       <div>
         <div>
           <Nav isLoggedIn={true}/>
+          <span  className="player">
+          </span>
           <container
             style={{
               color: "white",
@@ -289,7 +291,7 @@ class PoseNet extends Component {
             />
           </div>
         </div>
-        <Player />
+        
       </div>
     );
   }

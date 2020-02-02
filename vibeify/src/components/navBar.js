@@ -4,7 +4,6 @@ import { Button } from '@material-ui/core';
 import settings from '../assets/icons8-settings.svg';
 import Modal from 'react-modal'
 import SettingsPage from "../pages/settings";
-import Player from "../components/player";
 
 class Nav extends Component {
     state = {

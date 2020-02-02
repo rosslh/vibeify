@@ -109,3 +109,10 @@ h2{
   color: white;
   outline: black;
 }
+
+.player {
+  right: 10%;
+  top: 3%;
+  max-width: 100%;
+  position: absolute;
+}
