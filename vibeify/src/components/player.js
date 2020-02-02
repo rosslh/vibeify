@@ -1,10 +1,16 @@
 import React, { useContext, useState } from "react";
 import SpotifyPlayer from "react-spotify-web-playback";
 import Store from "../store";
+import Songs from "../pages/songs"
 
 const Player = () => {
-  const { spotifyToken } = useContext(Store);
+  const { spotifyToken, songs } = useContext(Store);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [queue, setQueue] = useState([]);
+
+  if(!typeof(Songs()[0])=== "undefined"){
+    console.log(Songs()[0], typeof(Songs()[0]))
+  }
 
   return (
     <div
@@ -17,7 +23,7 @@ const Player = () => {
         alignItems: "flex-end"
       }}
     >
-      {spotifyToken && (
+      {spotifyToken && queue && (
         <SpotifyPlayer
           styles={{
 
@@ -28,7 +34,7 @@ const Player = () => {
             sliderTrackColor:"#white",
             savedColor: '#fff',
             trackArtistColor: '#ccc',
-            trackNameColor: '#fff',
+            trackNameColor: '#fff'
           }}
           autoPlay
           showSaveIcon
@@ -36,7 +42,7 @@ const Player = () => {
           play={isPlaying}
           token={spotifyToken}
           magnifySliderOnHover={true}
-          uris={['spotify:artist:6HQYnRM4OzToCYPpVBInuU']}
+          // uris={[Songs()[0].uri]}
         />
       )}
     </div>

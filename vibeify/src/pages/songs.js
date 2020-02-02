@@ -77,19 +77,20 @@ const Songs = () => {
     }
   }, [songs]);
 
-  return (
-    <div>
-      {Object.keys(songs).length}
-      {Object.keys(songs)
-        .map(id => songs[id])
-        .sort((a, b) => b.litness - a.litness)
-        .map(song => (
-          <div key={song.id}>
-            {song.name} - {song.litness}
-          </div>
-        ))}
-    </div>
-  );
+  return Object.values(songs).sort((a, b) => b.litness - a.litness);
+  // return (
+  //   <div>
+  //     {Object.keys(songs).length}
+  //     {Object.keys(songs)
+  //       .map(id => songs[id])
+  //       .sort((a, b) => b.litness - a.litness)
+  //       .map(song => (
+  //         <div key={song.id}>
+  //           {song.name} - {song.litness}
+  //         </div>
+  //       ))}
+  //   </div>
+  // );
 };
 
 export default Songs;

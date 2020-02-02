@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import headerGraphic from '../assets/headerGraphic.png';
 import { flexbox } from '@material-ui/system';
-require('helvatica-neue-lt/index.css');
+// require('helvatica-neue-lt/index.css');
 
 class Header extends Component {
     render() {
