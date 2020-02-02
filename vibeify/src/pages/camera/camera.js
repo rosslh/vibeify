@@ -212,12 +212,34 @@ class PoseNet extends Component {
     }
     findPoseDetectionFrame()
   }
+  findLabel(){
+    if(this.state.howActive<0.1){
+        return "Relax"
+    }
+    else if(this.state.howActive>0.1 && this.state.howActive<0.15){
+        return "Chill"
+    }
+    else if(this.state.howActive>0.15 && this.state.howActive<0.2){
+        return "Vibing"
+    }
+    else if(this.state.howActive>0.2 && this.state.howActive<0.25){
+        return "Upbeat"
+    }
+    else if(this.state.howActive>0.25 ){
+        return "Crazy"
+    }
+  }
 
   render() {
     return (
       <div className>
         <div>
           <Nav />
+          <container style={{color:"white", display: "flex", width: "100%", top: "50%", transform: "translateY(-50%)", position: "absolute", alignItems: "center", justifyContent: "center"}}>
+          <h1 style={{ fontSize:"72px", color:"white"}}>{this.findLabel()}</h1>
+          <img src={require(`../../assets/${this.findLabel()}.png`)}/>
+          <img style={{position:"absolute",left: "0",right: "0"}} src={require(`../../assets/${this.findLabel()}Gradient.png`)}/>
+        </container>
           <video id={styles.videoNoShow} playsInline ref={this.getVideo} />
           <div>
             <canvas className={styles.webcam} ref={this.getCanvas} />
@@ -232,4 +254,4 @@ class PoseNet extends Component {
   }
 }
 
-export default PoseNet
+export default PoseNet  
