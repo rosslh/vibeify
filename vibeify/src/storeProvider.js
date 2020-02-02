@@ -24,7 +24,7 @@ class StoreProvider extends Component {
           selectedIDs: this.state.selectedIDs,
           setSelectedIDs: newIds => {
             this.setState({
-              selectedIds: newIds
+              selectedIDs: newIds
             });
           }
         }}

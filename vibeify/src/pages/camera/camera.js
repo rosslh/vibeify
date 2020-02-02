@@ -23,7 +23,7 @@ class PoseNet extends Component {
     skeletonColor: "#ffadea",
     skeletonLineWidth: 6,
     updateRate: 5,
-    slidingWindowSize: 30,
+    slidingWindowSize: 80,
     loadingText: 'Loading...please be patient...'
   }
 
@@ -34,7 +34,8 @@ class PoseNet extends Component {
       slidingWindow: [],
       howActive: 0,
       culmActivity: 0,
-      i: 0
+      i: 0,
+      shouldInitializePlaylist: false
     };
   }
 
@@ -183,7 +184,7 @@ class PoseNet extends Component {
         nmsRadius
       )
       poses.push(poses)
-      if (this.state.i == 0) {
+      if (this.state.i === 0) {
         const cosinesimilarity = this.cosinesimilarity(this.state.prevPoses, poses)
         let slidingWindow = this.state.slidingWindow
         slidingWindow.push(cosinesimilarity)
@@ -228,33 +229,34 @@ class PoseNet extends Component {
   }
   findLabel() {
     if (this.state.howActive <= 2) {
-      return "Relax";
+      return ["Relax", 0];
     } else if (this.state.howActive > 2 && this.state.howActive <= 4) {
-      return "Chill";
+      return ["Chill", 1];
     } else if (this.state.howActive > 4 && this.state.howActive <= 10) {
-      return "Vibing";
+      return ["Vibing", 2];
     } else if (this.state.howActive > 10 && this.state.howActive <= 30) {
-      return "Upbeat";
+      return ["Upbeat", 3];
     } else if (this.state.howActive > 30) {
-      return "Crazy";
+      return ["Crazy", 4];
     }
   }
   mean = (arr) => {
-    if (arr.length == 0)
+    if (arr.length === 0)
       return 0
     let n = arr.length;
     let mean = arr.reduce((a, b) => a + b) / n;
     return mean
   }
-  render() {
 
+  render() {
+    let [label, bin] = this.findLabel()
     return (
       <div>
         <div>
-          <Nav isLoggedIn={true} />
+          <Nav setShouldInitializePlaylist={(val) => this.setState({ shouldInitializePlaylist: val })} isLoggedIn={true} />
           <span className="player">
           </span>
-          <container
+          <span
             style={{
               color: "white",
               display: "flex",
@@ -269,22 +271,25 @@ class PoseNet extends Component {
             }}
           >
             <h1 style={{ fontSize: "72px", color: "white" }}>
-              {this.findLabel()}
+              {label}
             </h1>
-            <img style={{ marginLeft: "20px", height: "80px", width: "110px" }} src={require(`../../assets/${this.findLabel()}.png`)} />
+            <img alt="" style={{ marginLeft: "20px", height: "80px", width: "110px" }} src={require(`../../assets/${label}.png`)} />
             <img
+              alt=""
               style={{ zIndex: -1, position: "absolute", left: "0", right: "0" }}
-              src={require(`../../assets/${this.findLabel()}Gradient.png`)}
+              src={require(`../../assets/${label}Gradient.png`)}
             />
             <img
+              alt=""
               style={{ zIndex: -1, position: "absolute", left: "0", right: "0" }}
-              src={require(`../../assets/${this.findLabel()}Gradient.png`)}
+              src={require(`../../assets/${label}Gradient.png`)}
             />
             <img
+              alt=""
               style={{ zIndex: -1, position: "absolute", left: "0", right: "0" }}
-              src={require(`../../assets/${this.findLabel()}Gradient.png`)}
+              src={require(`../../assets/${label}Gradient.png`)}
             />
-          </container>
+          </span>
           <video id={styles.videoNoShow} playsInline ref={this.getVideo} />
           <div>
             <canvas className={styles.webcam} ref={this.getCanvas} />
@@ -300,9 +305,7 @@ class PoseNet extends Component {
             <h1>Energy Score {this.state.howActive.toFixed(1).toLocaleString()}</h1>
             <h2>Avg Calories Burned {this.state.culmActivity.toFixed(1).toLocaleString()}</h2>
             <div className={styles.playerStyle}>
-              
-                <Player />
-              
+              <Player currentBin={bin} setShouldInitializePlaylist={(val) => this.setState({ shouldInitializePlaylist: val })} shouldInitializePlaylist={this.state.shouldInitializePlaylist} />
             </div>
 
           </div>

@@ -4,7 +4,7 @@ import noIcon from '../assets/noIcon.png'
 import Store from "../store";
 
 
-const SettingsPage = () => {
+const Settings = () => {
   const { spotifyToken } = useContext(Store);
 
   const [playlists, setPlaylistOptions] = useState([]);
@@ -42,10 +42,10 @@ const SettingsPage = () => {
   });
 
   const editIds = (id) => {  
-    let currentIDs = selectedIDs
+    let currentIDs = [...selectedIDs];
     
     if (currentIDs.includes(id))
-      currentIDs = currentIDs.filter((sID) => sID != id)
+      currentIDs = currentIDs.filter((sID) => sID !== id)
     else 
       currentIDs.push(id)
 
@@ -112,4 +112,4 @@ class Playlist extends Component {
   }
 }
 
-export default SettingsPage
+export default Settings

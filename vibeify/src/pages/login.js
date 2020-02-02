@@ -3,7 +3,6 @@ import { Button } from "@material-ui/core";
 import { browserHistory } from "react-router";
 import spotify_logo from "../assets/spotify_logo.png";
 import Header from "../components/splashHeader";
-import Nav from "../components/navBar";
 import Store from "../store";
 
 const Login = () => {

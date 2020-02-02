@@ -3,7 +3,7 @@ import headerGraphic from '../assets/headerGraphic.png';
 import { Button } from '@material-ui/core';
 import music from '../assets/music.png';
 import Modal from 'react-modal'
-import SettingsPage from "../pages/settings";
+import SettingsPage from "./settings"
 
 class Nav extends Component {
     state = {
@@ -36,7 +36,7 @@ class Nav extends Component {
                         color="0xfff"
                         style={{ visibility: visible, zIndex: 1000 }}
                     >
-                        <img src={music} className="Spotify_logo_login" height="30" width="50" />
+                        <img alt="Music" src={music} className="Spotify_logo_login" height="30" width="50" />
                     </Button>
                 </div>
                 <div>
@@ -47,7 +47,7 @@ class Nav extends Component {
                         <div>
                             <SettingsPage />
                         </div>
-                        <button onClick={() => { this.setState({ showModal: false }) }}>close</button>
+                        <button onClick={() => { this.setState({ showModal: false }); this.props.setShouldInitializePlaylist(true) }}>close</button>
                     </Modal>
                 </div>
             </span>
