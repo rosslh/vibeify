@@ -23,6 +23,7 @@ class PoseNet extends Component {
     skeletonColor: '#ffadea',
     skeletonLineWidth: 6,
     updateRate: 5,
+    slidingWindowSize:30,
     loadingText: 'Loading...please be patient...'
   }
 
@@ -30,6 +31,7 @@ class PoseNet extends Component {
     super(props, PoseNet.defaultProps)
     this.state = {
       prevPoses: null,
+      slidingWindow: [],
       howActive: 0,
       i: 0
     };
@@ -139,12 +141,12 @@ class PoseNet extends Component {
       if (ind < currentPosesMatrix.length){
         cosinesimilarities += similarity(prevPosesMatrix[ind],currentPosesMatrix[ind])
       }
-
     }
-    return cosinesimilarities/prevPosesMatrix.length
+    let avg = cosinesimilarities/prevPosesMatrix.length
+    return Number.isNaN(avg) ? 1 : avg
   }
 
-  howActive = (prevPoses,currentPoses) => 100-(this.cosinesimilarity(prevPoses,currentPoses)+1)*50
+  howActive = (slidingWindow) => 300-(this.mean(slidingWindow)+1)*150
   poseDetectionFrame(canvasContext) {
     const {
       imageScaleFactor, 
@@ -158,6 +160,7 @@ class PoseNet extends Component {
       showVideo, 
       updateRate,
       skeletonColor, 
+      slidingWindowSize,
       skeletonLineWidth,
       } = this.props
     const posenetModel = this.posenet
@@ -177,7 +180,12 @@ class PoseNet extends Component {
         )
       poses.push(poses)
       if (this.state.i==0){
-        this.setState({howActive: this.howActive(this.state.prevPoses,poses),prevPoses: poses})
+        const cosinesimilarity = this.cosinesimilarity(this.state.prevPoses,poses)
+        let slidingWindow = this.state.slidingWindow
+        slidingWindow.push(cosinesimilarity)
+        slidingWindow = slidingWindow.length > slidingWindowSize ? slidingWindow.slice(-slidingWindowSize) : slidingWindow
+        const activityScore = this.howActive(slidingWindow)
+        this.setState({howActive: activityScore,slidingWindow:slidingWindow,prevPoses: poses})
       }
       let i = this.state.i
       i = (i+1)%updateRate
@@ -212,8 +220,15 @@ class PoseNet extends Component {
     }
     findPoseDetectionFrame()
   }
-
+  mean = (arr) =>{
+    if (arr.length == 0)
+      return [0,0]
+    let n = arr.length;
+    let mean = arr.reduce((a,b) => a+b)/n;
+    return mean
+  }
   render() {
+   
     return (
       <div className>
         <div>

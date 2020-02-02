@@ -100,3 +100,8 @@
     transform: rotate(360deg);
   }
 }
+
+h1{
+  color: white;
+  outline: black;
+}
