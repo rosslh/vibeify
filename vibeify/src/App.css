@@ -67,6 +67,26 @@
   color: white;
 }
 
+.__mvqn38 {
+  padding-left: 20px;
+}
+
+.__1c37u84 p:last-child {
+  margin-top: -20px;
+}
+
+.__mvqn38>img {
+height:30px !important;
+width:30px !important;
+  border-radius: 20px;
+}
+
+._PlayerRSWP {
+  border-radius: 40px;
+  background-color: transparent;
+}
+
+
 .ReactModal__Content  {
   color: white;
   top: 30% !important;

@@ -12,20 +12,26 @@ const Player = () => {
         height: "5rem",
         display: "flex",
         flex:1,
+        marginLeft:"360px",
+        marginRight:"360px",
         alignItems: "flex-end"
       }}
     >
       {spotifyToken && (
         <SpotifyPlayer
           styles={{
-            bgColor: '#333',
-            color: '#fff',
+
+            bgColor: 'white',
+            color: '#black',
             loaderColor: '#fff',
-            sliderColor: '#1cb954',
+            sliderHandleColor:"#white",
+            sliderTrackColor:"#white",
             savedColor: '#fff',
             trackArtistColor: '#ccc',
             trackNameColor: '#fff',
           }}
+          autoPlay
+          showSaveIcon
           persistDeviceSelection
           play={isPlaying}
           token={spotifyToken}
